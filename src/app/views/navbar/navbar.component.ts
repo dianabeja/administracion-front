@@ -12,6 +12,8 @@ export class NavbarComponent {
   }
 
   mostrar : boolean = false;
+  mostrarAlarmaa : boolean = false;
+
 
   mostrarMenu(){
     if(this.mostrar== false){
@@ -20,6 +22,16 @@ export class NavbarComponent {
     } else{
       this.mostrar= false;
       this.servicio.Actualizar_Menu(false);
+    }
+  }
+
+  mostrarAlarma(){
+    if(this.mostrarAlarmaa== false){
+      this.mostrarAlarmaa= true;
+      this.servicio.Actualizar_Alerta(true);
+    } else{
+      this.mostrarAlarmaa= false;
+      this.servicio.Actualizar_Alerta(false);
     }
   }
 }

@@ -1,19 +1,19 @@
-body {
-    margin: 0; 
-  }
+.home-container {
+    max-width: 1100px;
+    margin: 0 auto;
   
-
-.contenedor{
-    height: 100vh;
-    background: linear-gradient(to bottom, #ffffff, rgba(216, 243, 255, 1)); 
-    position: fixed;
-    width: 100vw;
-    height: 100vw;
-}
-
-.navbar{
-    position: fixed;
-    width: 100vw;
-    left: 0;
-    top: 0;
-}
+    .conn-btn {
+      color: #fff;
+      background-color: #00b173;
+      font-size: 14px;
+    }
+  
+    .publish-btn {
+      margin-bottom: 20px;
+      float: right;
+    }
+  
+    .mat-card {
+      margin-bottom: 20px;
+    }
+  }

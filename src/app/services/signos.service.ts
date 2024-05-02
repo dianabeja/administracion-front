@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Injectable } from '@angular/core';
 import {
   IMqttMessage,
   IMqttServiceOptions,
@@ -7,12 +7,11 @@ import {
 import { IClientSubscribeOptions } from 'mqtt-browser';
 import { Subscription } from 'rxjs';
 
-@Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css'],
+
+@Injectable({
+  providedIn: 'root'
 })
-export class AppComponent {
+export class ConectionService {
   private curSubscription: Subscription | undefined;
   connection = {
     hostname: 'broker.emqx.io',
@@ -40,10 +39,10 @@ export class AppComponent {
 
   constructor(private _mqttService: MqttService) {
     this.client = this._mqttService;
-    this.createConnection();
+    //this.createConnection();
   }
 
-  createConnection() {
+  createConnection(topic: string, qos: number) {
     try {
       this.client?.connect(this.connection as IMqttServiceOptions);
     } catch (error) {
@@ -52,7 +51,7 @@ export class AppComponent {
     this.client?.onConnect.subscribe(() => {
       this.isConnection = true;
       console.log('Connection succeeded!');
-      this.doSubscribe();
+      this.doSubscribe(topic, qos);
     });
     this.client?.onError.subscribe((error: any) => {
       this.isConnection = false;
@@ -72,8 +71,8 @@ export class AppComponent {
     });
   }
 
-  doSubscribe() {
-    const { topic, qos } = this.subscription;
+  doSubscribe(topic: string, qos: number) {
+    //const { topic, qos } = this.subscription;
     this.curSubscription = this.client
       ?.observe(topic, { qos } as IClientSubscribeOptions)
       .subscribe((message: IMqttMessage) => {
@@ -95,4 +94,6 @@ export class AppComponent {
       console.log('Disconnect failed', error.toString());
     }
   }
+
+  
 }

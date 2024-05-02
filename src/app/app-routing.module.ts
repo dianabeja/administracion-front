@@ -4,6 +4,7 @@ import { PerfilComponent } from './views/perfil/perfil.component';
 import { InicioComponent } from './views/inicio/inicio.component';
 import { HabitacionComponent } from './views/habitacion/habitacion.component';
 import { RegistroComponent } from './views/registro/registro.component';
+import { AlertaComponent } from './views/alerta/alerta.component';
 
 const routes: Routes = [
   {path:"perfil", component: PerfilComponent},
@@ -11,6 +12,8 @@ const routes: Routes = [
   { path: 'inicio', component: InicioComponent },
   { path: 'habitacion', component: HabitacionComponent },
   { path: 'registro', component: RegistroComponent },
+  { path: 'alerta', component: AlertaComponent },
+
 
 ];
 
