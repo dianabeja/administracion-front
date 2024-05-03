@@ -1,109 +1,118 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { SignosService } from 'src/app/services/signos.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-inicio',
   templateUrl: './inicio.component.html',
-  styleUrls: ['./inicio.component.css']
+  styleUrls: ['./inicio.component.css'],
 })
-export class InicioComponent {
+export class InicioComponent implements OnInit, OnDestroy {
   habitaciones = [
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 1",
-      temperatura: 37,
+      titulo: 'Habitación 1',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 2",
-      temperatura: 37,
+      titulo: 'Habitación 2',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 3",
-      temperatura: 37,
+      titulo: 'Habitación 3',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 4",
-      temperatura: 37,
+      titulo: 'Habitación 4',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 5",
-      temperatura: 37,
+      titulo: 'Habitación 5',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 1",
-      temperatura: 37,
+      titulo: 'Habitación 1',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 2",
-      temperatura: 37,
+      titulo: 'Habitación 2',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 3",
-      temperatura: 37,
+      titulo: 'Habitación 3',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 4",
-      temperatura: 37,
+      titulo: 'Habitación 4',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 5",
-      temperatura: 37,
+      titulo: 'Habitación 5',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 1",
-      temperatura: 37,
+      titulo: 'Habitación 1',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
     {
-      imagen: "https://firebasestorage.googleapis.com/v0/b/heartmodel-caedd.appspot.com/o/images.jpg?alt=media&token=07b79e4e-1601-455a-a16f-de881a90b1e4",
-      titulo: "Habitación 2",
-      temperatura: 37,
+      titulo: 'Habitación 2',
+      temperatura: { valor: 0 }, 
       oxigeno: 120,
       presion: 120,
-      ritmoCardiaco: 50
+      ritmoCardiaco: 50,
     },
- 
-
   ];
+
+  private mqttSubscription: Subscription | undefined;
+
+  constructor(private mqttService: SignosService) { }
+
+  ngOnInit(): void {
+    this.mqttService.initialize('topic/emqx');
+
+    this.mqttSubscription = this.mqttService
+      .getReceiveNews()
+      .subscribe((news: string) => {
+        const data = JSON.parse(news);
+        this.habitaciones.forEach((habitacion) => {
+          habitacion.temperatura = { valor: parseInt(data) };
+        });
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.mqttSubscription?.unsubscribe();
+  }
 }

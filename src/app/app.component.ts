@@ -43,7 +43,7 @@ export class AppComponent {
     this.createConnection();
   }
 
-  createConnection() {
+  public createConnection() {
     try {
       this.client?.connect(this.connection as IMqttServiceOptions);
     } catch (error) {

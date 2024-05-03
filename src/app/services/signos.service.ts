@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
-import {
-  IMqttMessage,
-  IMqttServiceOptions,
-  MqttService,
-} from 'ngx-mqtt';
+import { IMqttMessage, IMqttServiceOptions, MqttService } from 'ngx-mqtt';
 import { IClientSubscribeOptions } from 'mqtt-browser';
-import { Subscription } from 'rxjs';
-
+import { Subscription, Observable, Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ConectionService {
+export class SignosService {
   private curSubscription: Subscription | undefined;
-  connection = {
+  private receiveNewsSubject: Subject<string> = new Subject<string>();
+
+  private connection = {
     hostname: 'broker.emqx.io',
     port: 8083,
     path: '/mqtt',
@@ -26,42 +23,41 @@ export class ConectionService {
     protocol: 'ws',
   };
 
-  subscription = {
-    topic: 'topic/emqx',
+  private subscription = {
+    topic: '',
     qos: 0,
   };
 
-  receiveNews = 'No news received yet.';
-
-  client: MqttService | undefined;
-  isConnection = false;
-  subscribeSuccess = false;
+  private client: MqttService;
 
   constructor(private _mqttService: MqttService) {
     this.client = this._mqttService;
-    //this.createConnection();
   }
 
-  createConnection(topic: string, qos: number) {
+  public initialize(topic: string) {
+    this.subscription.topic = topic;
+    this.createConnection();
+  }
+
+  private createConnection() {
     try {
-      this.client?.connect(this.connection as IMqttServiceOptions);
+      this.client.connect(this.connection as IMqttServiceOptions);
     } catch (error) {
       console.log('mqtt.connect error', error);
     }
-    this.client?.onConnect.subscribe(() => {
-      this.isConnection = true;
+    this.client.onConnect.subscribe(() => {
       console.log('Connection succeeded!');
-      this.doSubscribe(topic, qos);
+      this.doSubscribe();
     });
-    this.client?.onError.subscribe((error: any) => {
-      this.isConnection = false;
+    this.client.onError.subscribe((error: any) => {
       console.log('Connection failed', error);
     });
-    this.client?.onMessage.subscribe((packet: any) => {
+    this.client.onMessage.subscribe((packet: any) => {
       const messageString = packet.payload.toString();
       const parts = messageString.split('"');
       if (parts.length >= 3) {
-        this.receiveNews = parts[3];
+        const news = parts[3];
+        this.receiveNewsSubject.next(news);
       } else {
         console.log('Received message format is not as expected.');
       }
@@ -71,29 +67,28 @@ export class ConectionService {
     });
   }
 
-  doSubscribe(topic: string, qos: number) {
-    //const { topic, qos } = this.subscription;
-    this.curSubscription = this.client
-      ?.observe(topic, { qos } as IClientSubscribeOptions)
-      .subscribe((message: IMqttMessage) => {
-        this.subscribeSuccess = true;
+  private doSubscribe() {
+    const { topic, qos } = this.subscription;
+    this.curSubscription = this.client.observe(topic, { qos } as IClientSubscribeOptions)
+      .subscribe(() => {
+        // You can add handling logic here if needed
       });
   }
 
-  doUnSubscribe() {
-    this.curSubscription?.unsubscribe();
-    this.subscribeSuccess = false;
+  public getReceiveNews(): Observable<string> {
+    return this.receiveNewsSubject.asObservable();
   }
 
-  destroyConnection() {
+  public unsubscribe() {
+    this.curSubscription?.unsubscribe();
+  }
+
+  public disconnect() {
     try {
-      this.client?.disconnect(true);
-      this.isConnection = false;
+      this.client.disconnect(true);
       console.log('Successfully disconnected!');
     } catch (error: any) {
       console.log('Disconnect failed', error.toString());
     }
   }
-
-  
 }
